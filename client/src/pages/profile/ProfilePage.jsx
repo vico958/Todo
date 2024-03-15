@@ -1,0 +1,78 @@
+import React from "react";
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Text,
+  useToast
+} from "@chakra-ui/react";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import ChangePasswordForm from "./ChangePasswordForm";
+import userClient from "../../services/userClient";
+import ChangeFullNameForm from "./ChangeFullNameForm";
+const ProfilePage = () => {
+  const user = useAuthUser();
+  const toast = useToast();
+
+  const onSubmitChangePassword = async (data) => {
+    try{
+      const { oldPassword, newPassword } = data;
+      const result = await userClient.changePassword(user.userId, oldPassword, newPassword);
+      console.log(result)
+      toastForAllProfile("Change Password Success.", result, "success")
+      }catch(error){
+        toastForAllProfile("Failed to change password.", error.message, "error")
+      //TODO
+    }
+  };
+
+  const onSubmitChageFullName = async (data) => {
+    try{
+      const { password, fullName } = data;
+      console.log(data)
+      const result = await userClient.changeFullName(user.userId, password, fullName);
+      console.log(result)
+      toastForAllProfile("Change Full Name Success.", result, "success")
+      }catch(error){
+        toastForAllProfile("Failed to change Full Name.", error.message, "error")
+      //TODO
+    }
+  }
+
+  const toastForAllProfile = (title, description, status) => {
+    toast({
+      title: title,
+      description: description,
+      duration: 2000,
+      isClosable: true,
+      position: 'top',
+      status: status,
+    })
+  }
+
+  return (
+    <Tabs isFitted variant="enclosed">
+      <TabList mb="1em">
+        <Tab>Information</Tab>
+        <Tab>Change Password</Tab>
+        <Tab>Change Full Name</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel>
+          <Text mb="15px">Email : {user.email}</Text>
+          <Text mb="15px">Full Name: {user.fullName}</Text>
+        </TabPanel>
+        <TabPanel>
+          <ChangePasswordForm onSubmitForm={onSubmitChangePassword} />
+        </TabPanel>
+        <TabPanel>
+          <ChangeFullNameForm onSubmitForm={onSubmitChageFullName}/>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
+  );
+};
+
+export default ProfilePage;
