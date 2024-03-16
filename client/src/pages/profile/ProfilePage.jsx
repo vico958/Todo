@@ -20,7 +20,6 @@ const ProfilePage = () => {
   const toast = useToast();
   const mutationChangePassword = useChangePassword();
   const mutationChangeFullName = useChangeFullName();
-
   // useEffect(() => {
 
   // }, [user])
@@ -44,7 +43,7 @@ const ProfilePage = () => {
       const {userId} = user
       const url = userClient.changeFullNameUrl();
       const result = await mutationChangeFullName.mutateAsync({userId, password, fullName, url});
-      toastForAllProfile("Change Full Name Success.", result, "success")
+      toastForAllProfile("Change Full Name Success.", result + ". If you want to see the changes, relogin please", "success")
       }catch(error){
         toastForAllProfile("Failed to change Full Name.", error.message, "error")
       //TODO

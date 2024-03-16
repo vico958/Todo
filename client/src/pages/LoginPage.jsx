@@ -12,7 +12,6 @@ const LoginPage = () => {
   const { register, handleSubmit } = useForm();
   const toast = useToast();
   const mutation = useLogin();
-
   const onClickLogin = async (data) =>{
     try{
       const {email, password} = data
