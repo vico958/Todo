@@ -4,25 +4,28 @@ import todoClient from './services/todoClient';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import useTodoStore from './zustand/todo/store';
 import Loader from './components/loader/Loader';
-
+import useGetTodos from './hooks/todos/useGetTodos';
+import Error from './components/error/Error';
 const App = () => {
-  const { setTodosOnStartOfApp, todos } = useTodoStore();
+  const { setTodosOnStartOfApp } = useTodoStore();
   const user = useAuthUser();
-  useEffect(() =>{
-    const fetchData = async () => {
-      try {
-        const todos = await todoClient.getAllTodoOfUser(user.userId);
-        setTodosOnStartOfApp(todos);
-      } catch (error) {
-        console.error('Error fetching todos:', error);
-      }
-    }
-    fetchData();
-  },[])
+  const url = todoClient.getAllTodoOfUserUrl(user.userId);
+  const {data, error , isLoading} = useGetTodos(user.userId, url);
 
-  if(todos.length === 0) {
+  useEffect(() =>{
+    if(data !== undefined) {
+      setTodosOnStartOfApp(data);
+    }
+  },[data])
+
+  if(isLoading) {
     return <Loader/>
   }
+
+  if(error){
+    return <Error message={error.message}/>
+  }
+
   return (<>
     <TodoContainer/>
   </>

@@ -12,15 +12,25 @@ import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import ChangePasswordForm from "./ChangePasswordForm";
 import userClient from "../../services/userClient";
 import ChangeFullNameForm from "./ChangeFullNameForm";
+import useChangePassword from "../../hooks/users/useChangePassword";
+import useChangeFullName from "../../hooks/users/useChangeFullName";
+
 const ProfilePage = () => {
   const user = useAuthUser();
   const toast = useToast();
+  const mutationChangePassword = useChangePassword();
+  const mutationChangeFullName = useChangeFullName();
+
+  // useEffect(() => {
+
+  // }, [user])
 
   const onSubmitChangePassword = async (data) => {
     try{
       const { oldPassword, newPassword } = data;
-      const result = await userClient.changePassword(user.userId, oldPassword, newPassword);
-      console.log(result)
+      const url = userClient.changePasswordUrl();
+      const {userId} = user
+      const result = await mutationChangePassword.mutateAsync({userId, oldPassword, newPassword, url })
       toastForAllProfile("Change Password Success.", result, "success")
       }catch(error){
         toastForAllProfile("Failed to change password.", error.message, "error")
@@ -31,9 +41,9 @@ const ProfilePage = () => {
   const onSubmitChageFullName = async (data) => {
     try{
       const { password, fullName } = data;
-      console.log(data)
-      const result = await userClient.changeFullName(user.userId, password, fullName);
-      console.log(result)
+      const {userId} = user
+      const url = userClient.changeFullNameUrl();
+      const result = await mutationChangeFullName.mutateAsync({userId, password, fullName, url});
       toastForAllProfile("Change Full Name Success.", result, "success")
       }catch(error){
         toastForAllProfile("Failed to change Full Name.", error.message, "error")

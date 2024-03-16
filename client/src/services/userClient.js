@@ -3,84 +3,20 @@ class userClient {
         this.url = "http://localhost:3042/user/";
     }
 
-    async register (userToRegister) {
-        const res = await fetch(`${this.url}register`, {
-            method:"POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body:JSON.stringify({
-                userToRegister
-            })
-          })
-          const jsonToReturn = await res.json();
-          if(res.status !== 200){
-            throw new Error(jsonToReturn);
-          }
-          return jsonToReturn;
+    registerUrl () {
+        return `${this.url}register`
     }
 
-    async login (userInfo) {
-        const res = await fetch(`${this.url}login`,{
-            method:"POST",
-            headers:{
-                "Content-Type": "application/json",
-            },
-            body:JSON.stringify({
-                userInfo
-            })
-        })
-        const jsonToReturn = await res.json();
-          if(res.status !== 200){
-            throw new Error(jsonToReturn);
-          }
-          return jsonToReturn;
+    loginUrl () {
+        return `${this.url}login`;
     }
 
-    async changePassword (userId, oldPassword, newPassword){
-        const user = {
-            userId:userId,
-            oldPassword:oldPassword,
-            newPassword:newPassword
-        }
-        const res = await fetch(`${this.url}change-password`,{
-            method:"put",
-            headers:{
-                "Content-Type": "application/json",
-            },
-            body:JSON.stringify({
-                user
-            })
-        })
-        console.log(res)
-        const jsonToReturn = await res.json();
-          if(res.status !== 200){
-            throw new Error(jsonToReturn);
-          }
-          return jsonToReturn;
+    changePasswordUrl (){
+        return `${this.url}change-password`
     } 
 
-    async changeFullName (userId, password, fullName){
-        const user = {
-            userId:userId,
-            password:password,
-            fullName:fullName
-        }
-        const res = await fetch(`${this.url}change-full-name`,{
-            method:"put",
-            headers:{
-                "Content-Type": "application/json",
-            },
-            body:JSON.stringify({
-                user
-            })
-        })
-        console.log(res)
-        const jsonToReturn = await res.json();
-          if(res.status !== 200){
-            throw new Error(jsonToReturn);
-          }
-          return jsonToReturn;
+    changeFullNameUrl (){
+        return `${this.url}change-full-name`;
     }
 }
 

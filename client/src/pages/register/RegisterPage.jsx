@@ -18,23 +18,28 @@ import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./registerRules";
+import useRegister from "../../hooks/users/useRegister";
 
 const RegisterPage = () => {
   const signIn = useSignIn();
   const toast = useToast()
   const navigate = useNavigate();
+  const mutation = useRegister();
+
   const {register, handleSubmit, formState:{errors, isValid}} = useForm({resolver:zodResolver(schema)});
 
   const onClickSignUp = async (data) => {
     try{
 
       const { email, password, fullName } = data
-      const newUser = {
+      const userToRegister = {
         "email": email,
         "password": password,
         "fullName": fullName,
       };
-      const result = await userClient.register(newUser);
+      const url = userClient.registerUrl();
+      const result = await mutation.mutateAsync({userToRegister, url}) 
+      // const result = await userClient.register(newUser);
         signIn({
           auth:{
             token:result.token,

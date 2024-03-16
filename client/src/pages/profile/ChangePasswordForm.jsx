@@ -6,7 +6,7 @@ import { schema } from "./changePasswordRules"
 
 const ChangePasswordForm = ({onSubmitForm}) => {
     const [passwordMatchError, setPasswordMatchError] = useState(false);
-    const {register, handleSubmit, formState:{errors, isValid}, watch} = useForm();
+    const {register, handleSubmit, formState:{errors, isValid}, watch} = useForm({resolver:zodResolver(schema)});
     const newPassword = watch("newPassword", "");
     const repeatNewPassword = watch("repeatNewPassword", "");
     const [checkHideOldPasswrod, setCheckHideOldPasswrod] = useState(true);

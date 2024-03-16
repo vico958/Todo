@@ -41,7 +41,6 @@ async function editTodoPriority (req, res) {
     }catch(error){
         console.log(error);
     }
-    // TODO or to delete
 }
 
 module.exports = {
