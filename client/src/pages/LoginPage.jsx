@@ -27,7 +27,7 @@ const LoginPage = () => {
           token:token,
           type:"Bearer",
         },
-        userState:{email:user.email, fullName:user.fullName, userId:user._id}
+        userState:{email:user.email, fullName:user.fullName, userId:user._id, token:token}
       })
       toast({
         title: "Login",

@@ -6,8 +6,10 @@ import GenericModal from "../../genericModal/GenericModal";
 import { useRef, useState } from "react";
 import useDeleteTodo from "../../../hooks/todos/useDeleteTodo";
 import useEditTodoPriority from "../../../hooks/todos/useEditTodoPriority";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 
 const TodoItem = ({todo}) => {
+    const user = useAuthUser();
     const {title, description, _id} = todo
     const {removeTodo, editTodoPriority}  = useTodoStore();
     const [showModal, setShowModal] = useState(false);
@@ -18,13 +20,15 @@ const TodoItem = ({todo}) => {
 
     const handleDeleteTaskAfterAcceptDelete = async () =>{
         const url = todoClient.deleteTaskUrl()
-        await mutationDeleteTodo.mutateAsync({url, _id})
+        const token = user.token;
+        await mutationDeleteTodo.mutateAsync({url, _id, token})
         removeTodo(_id)
     }
 
     const handleEditTodoPriorityAfterAcceptEdit = async () => {
         const url = todoClient.editTodoPriority();
-        await mutationEditTodoPriority.mutateAsync({url, _id})
+        const token = user.token;
+        await mutationEditTodoPriority.mutateAsync({url, _id, token})
         editTodoPriority(_id)
     }
 

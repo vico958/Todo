@@ -2,15 +2,15 @@ import { useMutation } from "@tanstack/react-query";
 
 const useChangeFullName = () => {
 
-  const mutateFunction = async ({userId, password, fullName, url}) =>{
+  const mutateFunction = async ({password, fullName, url, token}) =>{
     const user = {
-        userId:userId,
         password:password,
         fullName:fullName
     }
     const res = await fetch(url,{
         method:"put",
         headers:{
+          "authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
         },
         body:JSON.stringify({

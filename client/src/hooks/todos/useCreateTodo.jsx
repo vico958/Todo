@@ -2,9 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 
 const useCreateTodo = () => {
 
-  const mutateFunction = ({newTask, url}) =>fetch(url, {
+  const mutateFunction = ({newTask, url, token}) =>fetch(url, {
       method:"POST",
+      credentials: "same-origin",
       headers: {
+        "authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body:JSON.stringify({

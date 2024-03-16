@@ -1,10 +1,11 @@
 const express = require("express");
+const auth = require("../../middleware/auth");
 const { createTodo, getAllTodos, deleteTodo, editTodoPriority } = require("./todoFunctions");
 const todoRouter = express.Router();
 
-todoRouter.get("/:userId", getAllTodos)
-todoRouter.post("/", createTodo)
-todoRouter.delete("/", deleteTodo)
-todoRouter.put("/edit", editTodoPriority)
+todoRouter.get("/", [auth], getAllTodos)
+todoRouter.post("/", [auth], createTodo)
+todoRouter.delete("/", [auth], deleteTodo)
+todoRouter.put("/edit", [auth], editTodoPriority)
 
 module.exports= todoRouter;

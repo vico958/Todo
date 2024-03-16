@@ -38,7 +38,8 @@ async function userRegister(req, res) {
 
 async function changePassword(req, res) {
     try{
-        const {userId, newPassword, oldPassword} = req.body.user
+        const {newPassword, oldPassword} = req.body.user;
+        const userId = req.user.id;
         const user = await userManger.getUserById(userId)
         if(oldPassword === user.password){
             const returnedData = await userManger.changePassword(userId, newPassword)
@@ -56,7 +57,8 @@ async function changePassword(req, res) {
 
 async function changeFullName(req, res) {
     try{
-        const {userId, password, fullName} = req.body.user
+        const {password, fullName} = req.body.user
+        const userId = req.user.id;
         const user = await userManger.getUserById(userId)
         if(password === user.password){
             const returnedData = await userManger.changeFullName(userId, fullName)

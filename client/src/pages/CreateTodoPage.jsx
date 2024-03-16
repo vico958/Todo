@@ -31,8 +31,9 @@ const CreateTodoPage = () => {
   const onSubmitForm = async (data) => {
     let message="";
     try {
-      const newTask = { ...data, userId: user.userId }
-     await mutation.mutateAsync({newTask, url})
+      const token = user.token;
+      const newTask = { ...data }
+     await mutation.mutateAsync({newTask, url, token})
       onClickAnswerModal.current = navigateToHomePage;
       toast({
         title: "Created task",

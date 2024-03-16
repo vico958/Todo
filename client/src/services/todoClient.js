@@ -3,8 +3,8 @@ class todoClient{
         this.url = "http://localhost:3042/todo";
     }
 
-    getAllTodoOfUserUrl(userId) {
-      return `${this.url}/${userId}`;
+    getAllTodoOfUserUrl() {
+      return `${this.url}`;
     }
 
     createTaskUrl(){

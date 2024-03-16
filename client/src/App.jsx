@@ -10,7 +10,7 @@ const App = () => {
   const { setTodosOnStartOfApp } = useTodoStore();
   const user = useAuthUser();
   const url = todoClient.getAllTodoOfUserUrl(user.userId);
-  const {data, error , isLoading} = useGetTodos(user.userId, url);
+  const {data, error , isLoading} = useGetTodos(url, user.token);
 
   useEffect(() =>{
     if(data !== undefined) {

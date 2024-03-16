@@ -2,7 +2,7 @@ const todoManager = require("../../services/todo/todoManager");
 
 async function getAllTodos(req, res) {
     try{
-        const userId = req.params.userId
+        const userId = req.user.id
         const todos = await todoManager.getAllTodos(userId);
         res.status(200).send(JSON.stringify(todos))
         res.end();
@@ -13,7 +13,9 @@ async function getAllTodos(req, res) {
 
 async function createTodo(req, res) {
     try{
-        const returnedData = await todoManager.createTodo(req.body.newTask)
+        const userId = req.user.id;
+        const newTask = {...req.body.newTask, userId}
+        const returnedData = await todoManager.createTodo(newTask)
         res.status(200).send(JSON.stringify(returnedData));
         res.end();
     }catch (error) {

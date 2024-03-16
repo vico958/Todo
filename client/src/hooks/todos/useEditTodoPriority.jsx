@@ -1,10 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 
 const useEditTodoPriority = () => {
-    const mutateFunction = ({url, _id}) =>fetch(url,
+    const mutateFunction = ({url, _id, token}) =>fetch(url,
     {
       method: "PUT",
       headers: {
+        "authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

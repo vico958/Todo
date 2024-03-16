@@ -2,15 +2,15 @@ import { useMutation } from "@tanstack/react-query";
 
 const useChangePassword = () => {
 
-  const mutateFunction = async ({userId, oldPassword, newPassword, url}) =>{
+  const mutateFunction = async ({oldPassword, newPassword, url, token}) =>{
     const user = {
-        userId:userId,
         oldPassword:oldPassword,
         newPassword:newPassword
     }
     const res = await fetch(url,{
         method:"put",
         headers:{
+          "authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
         },
         body:JSON.stringify({
