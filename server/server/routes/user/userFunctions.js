@@ -2,7 +2,9 @@ const userManger = require("../../services/user/userManger")
 const jwt = require("jsonwebtoken")
 async function userLogin(req, res) {
     try{
-        const { email, password }= req.body.userInfo;
+        const { password }= req.body.userInfo;
+        let { email }= req.body.userInfo;
+        email = email.toLowerCase();
         const userFromDb= await userManger.getUserByEmail(email);
         if(!userFromDb || userFromDb.password !== password){
             res.status(400).send(JSON.stringify("email or password does not match!"))
@@ -20,12 +22,16 @@ async function userLogin(req, res) {
 async function userRegister(req, res) {
     try{
         const { userToRegister} = req.body;
-        const isAlreadyInSytem = await userManger.getUserByEmail(userToRegister.email);
+        const emailInLowerCase = userToRegister.email.toLowerCase()
+        const isAlreadyInSytem = await userManger.getUserByEmail(emailInLowerCase);
         if(isAlreadyInSytem){
         res.status(400).send(JSON.stringify("Email already use"));
         res.end();
         }
         else{
+            console.log("e before", userToRegister.email)
+            userToRegister.email = emailInLowerCase;
+            console.log("e after", userToRegister.email)
             const returnedData = await userManger.register(userToRegister);
             const jwtToken = jwt.sign({id: returnedData._id, email:returnedData.email}, process.env.jwtToken, { expiresIn: "24h" })
             res.status(200).send(JSON.stringify({returnedData, token:jwtToken}));
