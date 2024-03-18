@@ -67,7 +67,6 @@ const RegisterPage = () => {
           status: 'error',
         })
         //TODO: something
-        console.log(error)
       }
   };
   return (

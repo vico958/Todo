@@ -40,7 +40,6 @@ const LoginPage = () => {
         navigate("/")
         }, 1600);
     }catch(error){
-      console.log(error);
       toast({
         title: "Login",
         description: `Failed to Login because ${error}`,
@@ -51,7 +50,6 @@ const LoginPage = () => {
       setTimeout(function() {
         navigate("/login")
         }, 1600);
-      console.log(error);
     }
   }
   return (
