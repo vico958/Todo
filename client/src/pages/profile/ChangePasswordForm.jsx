@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { schema } from "./changePasswordRules"
+import { passwordMustContain } from "../../services/schemasRules";
+import { handlePasswordKeyPress } from '../../services/general';
 
 const ChangePasswordForm = ({onSubmitForm}) => {
     const [passwordMatchError, setPasswordMatchError] = useState(false);
@@ -24,7 +26,7 @@ const ChangePasswordForm = ({onSubmitForm}) => {
             <FormLabel>
             Old Passowrd
             </FormLabel>
-            <Input {...register("oldPassword")} type={checkHideOldPasswrod? "password" : "text"}/>
+            <Input {...register("oldPassword")} type={checkHideOldPasswrod? "password" : "text"} onKeyPress={handlePasswordKeyPress}/>
         </FormControl>
             <Checkbox mb="20px" onChange={() => setCheckHideOldPasswrod(!checkHideOldPasswrod)}>Show Password</Checkbox>
 
@@ -32,7 +34,7 @@ const ChangePasswordForm = ({onSubmitForm}) => {
             <FormLabel>
                 New Password
             </FormLabel>
-            <Input {...register("newPassword")} type={checkHideNewPassword? "password" : "text"}/>
+            <Input {...register("newPassword")} type={checkHideNewPassword? "password" : "text"} onKeyPress={handlePasswordKeyPress}/>
         </FormControl>
             <Checkbox mb="20px" onChange={() =>setCheckHideNewPassword(!checkHideNewPassword)}>Show Password</Checkbox>
         {errors.newPassword && (<Text color="red" fontSize="sm" m="5px">{errors.newPassword.message}</Text>)}
@@ -41,7 +43,7 @@ const ChangePasswordForm = ({onSubmitForm}) => {
             <FormLabel>
                 Repeat New Password
             </FormLabel>
-            <Input mb="10px" {...register("repeatNewPassword")} type={checkHideRepeatNewPassword? "password" : "text"}/>
+            <Input mb="10px" {...register("repeatNewPassword")} type={checkHideRepeatNewPassword? "password" : "text"} onKeyPress={handlePasswordKeyPress}/>
         </FormControl>
         <Box>
             <Checkbox mb="20px" onChange={() =>setCheckHideRepeatNewPassword(!checkHideRepeatNewPassword)}>Show Password</Checkbox>
@@ -51,6 +53,7 @@ const ChangePasswordForm = ({onSubmitForm}) => {
         {passwordMatchError && (<Text color="red" fontSize="sm" m="5px">New password and Repeat new password do not match</Text>)}
         <Button mt="10px" isDisabled={!isValid} type="submit" colorScheme='purple'>Submit</Button>
     </form>
+    <Text color="blue" fontSize="sm" mt="15px">{passwordMustContain}</Text>
     </Box>
   )
 }

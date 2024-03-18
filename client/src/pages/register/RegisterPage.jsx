@@ -15,16 +15,15 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { useForm } from "react-hook-form";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./registerRules";
-import useRegister from "../../hooks/users/useRegister";
+import { passwordMustContain } from "../../services/schemasRules"
+import { handlePasswordKeyPress } from "../../services/general";
 
 const RegisterPage = () => {
   const signIn = useSignIn();
   const toast = useToast()
   const navigate = useNavigate();
-  const mutation = useRegister();
 
   const {register, handleSubmit, formState:{errors, isValid}} = useForm({resolver:zodResolver(schema)});
 
@@ -37,9 +36,7 @@ const RegisterPage = () => {
         "password": password,
         "fullName": fullName,
       };
-      const url = userClient.registerUrl();
-      const result = await mutation.mutateAsync({userToRegister, url}) 
-      // const result = await userClient.register(newUser);
+      const result = await userClient.register(userToRegister);
         signIn({
           auth:{
             token:result.token,
@@ -86,6 +83,7 @@ const RegisterPage = () => {
               placeholder="password"
               mb="10px"
               type="password"
+              onKeyPress={handlePasswordKeyPress}
               />
               {errors.password && (<Text color="red" fontSize="sm" m="5px">{errors.password.message}</Text>)}
             <Input
@@ -103,6 +101,7 @@ const RegisterPage = () => {
             </Link>
           </CardFooter>
               </form>
+        <Text color="blue" fontSize="sm" m="5px">{passwordMustContain}</Text>
         </Card>
       </Flex>
   );

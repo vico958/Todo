@@ -16,7 +16,6 @@ import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { useForm } from "react-hook-form";
 import { useRef, useState } from "react";
 import GenericModal from "../components/genericModal/GenericModal";
-import useCreateTodo from "../hooks/todos/useCreateTodo";
 
 const CreateTodoPage = () => {
   const user = useAuthUser();
@@ -26,14 +25,12 @@ const CreateTodoPage = () => {
   const [modalMessage, setModalMessage] = useState("");
   const onClickAnswerModal = useRef(null);
   const toast = useToast();
-  const url = todoClient.createTaskUrl();
-  const mutation = useCreateTodo();
   const onSubmitForm = async (data) => {
     let message="";
     try {
       const token = user.token;
       const newTask = { ...data }
-     await mutation.mutateAsync({newTask, url, token})
+     await todoClient.createTask(newTask, token)
       onClickAnswerModal.current = navigateToHomePage;
       toast({
         title: "Created task",

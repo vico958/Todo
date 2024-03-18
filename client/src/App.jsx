@@ -3,29 +3,28 @@ import TodoContainer from './components/todoContainer/todoContainer/TodoContaine
 import todoClient from './services/todoClient';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import useTodoStore from './zustand/todo/store';
-import Loader from './components/loader/Loader';
-import useGetTodos from './hooks/todos/useGetTodos';
-import Error from './components/error/Error';
+import { Flex, Text } from '@chakra-ui/react';
+
 const App = () => {
-  const { setTodosOnStartOfApp } = useTodoStore();
+  const { todos, setTodosOnStartOfApp } = useTodoStore();
   const user = useAuthUser();
-  const url = todoClient.getAllTodoOfUserUrl(user.userId);
-  const {data, error , isLoading} = useGetTodos(url, user.token);
 
   useEffect(() =>{
-    if(data !== undefined) {
-      setTodosOnStartOfApp(data);
+    const gettingData = async() => {
+      const data = await todoClient.getAllTodoOfUser(user.token);
+      setTodosOnStartOfApp(data)
     }
-  },[data])
 
-  if(isLoading) {
-    return <Loader/>
+    gettingData();
+  },[])
+
+  if(todos?.length === 0){
+    return(
+      <Flex justify="center" mt="50px">
+        <Text color="purple.600">You dont have any Task</Text>
+      </Flex>
+    )
   }
-
-  if(error){
-    return <Error message={error.message}/>
-  }
-
   return (<>
     <TodoContainer/>
   </>

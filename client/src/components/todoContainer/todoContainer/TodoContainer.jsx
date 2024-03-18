@@ -3,7 +3,7 @@ import { SimpleGrid } from '@chakra-ui/react'
 import useTodoStore from "../../../zustand/todo/store";
 const TodoContainer = () => {
     const todos  = useTodoStore((state) => state.todos);
-    todos.sort((a,b) => {
+    todos?.sort((a,b) => {
         if (a.isPriority === b.isPriority) {
           return 0;
         }

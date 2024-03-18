@@ -4,14 +4,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import userClient from "../services/userClient";
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { useForm } from 'react-hook-form';
-import useLogin from '../hooks/users/useLogin';
 
 const LoginPage = () => {
   const signIn = useSignIn();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const toast = useToast();
-  const mutation = useLogin();
   const onClickLogin = async (data) =>{
     try{
       const {email, password} = data
@@ -19,8 +17,7 @@ const LoginPage = () => {
         email:email,
         password:password
       }
-      const url = userClient.loginUrl();
-      const result = await mutation.mutateAsync({userInfo, url});
+      const result = await userClient.login(userInfo);
       const {token , user} = result
       signIn({
         auth:{

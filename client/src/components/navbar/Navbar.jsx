@@ -12,16 +12,18 @@ import {
 import useSignOut from "react-auth-kit/hooks/useSignOut";
 import { useNavigate } from "react-router-dom";
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
-
+import useTodoStore from "../../zustand/todo/store";
 export default function Navbar() {
 
   const toast = useToast()
   const signOut = useSignOut();
   const navigate = useNavigate()
   const user = useAuthUser()
-  
+  const { setRemoveAllTodosOnLogOut } = useTodoStore();
+
   const onClickSignOut = () => {
     signOut();
+    setRemoveAllTodosOnLogOut();
     toast({
       title: 'Logged out.',
       description: "Successfully logged out",
