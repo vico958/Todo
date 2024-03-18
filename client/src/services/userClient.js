@@ -1,6 +1,6 @@
 class userClient {
     constructor(){
-        this.url = "http://localhost:3042/user/";
+        this.url = "https://todo-tcwg.onrender.com/user/";
     }
 
     registerUrl () {

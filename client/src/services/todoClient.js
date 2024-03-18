@@ -1,6 +1,6 @@
 class todoClient{
     constructor(){
-        this.url = "http://localhost:3042/todo";
+        this.url = "https://todo-tcwg.onrender.com/todo";
     }
 
     getAllTodoOfUserUrl() {
