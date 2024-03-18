@@ -27,11 +27,11 @@ const queryClient = new QueryClient();
 const  router = createBrowserRouter([
   {
     element:<AuthOutlet fallbackPath='/login'/>,
-    errorElement:<NotFoundPage/>,
     children:[
-  {
-    path:"/",
-    element:<RootLayout/>,
+      {
+        path:"/",
+        element:<RootLayout/>,
+        errorElement:<NotFoundPage/>,
     children: [
       {
         path:"/",
