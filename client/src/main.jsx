@@ -13,6 +13,7 @@ import createStore from 'react-auth-kit/createStore';
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 import ProfilePage from './pages/profile/ProfilePage.jsx';
 import RootLayoutForNotSign from './layouts/RootLayoutForNotSign.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
 
 const store = createStore({
   authName:'_auth',
@@ -26,6 +27,7 @@ const queryClient = new QueryClient();
 const  router = createBrowserRouter([
   {
     element:<AuthOutlet fallbackPath='/login'/>,
+    // errorElement:<NotFoundPage/>,
     children:[
   {
     path:"/",
@@ -59,6 +61,10 @@ const  router = createBrowserRouter([
     element:<LoginPage/>,
   }
 ]},
+{
+  path:"*",
+  element:<NotFoundPage/>
+}
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
