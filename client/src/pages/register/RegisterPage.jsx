@@ -48,7 +48,7 @@ const RegisterPage = () => {
           toast({
             title: 'Signed Up.',
             description: "Successfully Signed Up.",
-            duration: 7000,
+            duration: 4000,
             isClosable: true,
             position: 'top',
             status: 'success',
@@ -58,7 +58,7 @@ const RegisterPage = () => {
         toast({
           title: 'Signed Up Failed.',
           description: error.message,
-          duration: 7000,
+          duration: 4000,
           isClosable: true,
           position: 'top',
           status: 'error',
