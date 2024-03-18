@@ -27,7 +27,7 @@ const queryClient = new QueryClient();
 const  router = createBrowserRouter([
   {
     element:<AuthOutlet fallbackPath='/login'/>,
-    // errorElement:<NotFoundPage/>,
+    errorElement:<NotFoundPage/>,
     children:[
   {
     path:"/",
@@ -51,6 +51,7 @@ const  router = createBrowserRouter([
   },
   {
     element:<RootLayoutForNotSign/>,
+    errorElement:<NotFoundPage/>,
     children:[
   {
     path:"/register",
