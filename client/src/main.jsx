@@ -31,7 +31,6 @@ const  router = createBrowserRouter([
       {
         path:"/",
         element:<RootLayout/>,
-        errorElement:<NotFoundPage/>,
     children: [
       {
         path:"/",
@@ -51,7 +50,6 @@ const  router = createBrowserRouter([
   },
   {
     element:<RootLayoutForNotSign/>,
-    errorElement:<NotFoundPage/>,
     children:[
   {
     path:"/register",
