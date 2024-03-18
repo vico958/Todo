@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const cors = require("cors");
 const logger = require("./server/middleware/logger");
@@ -14,10 +15,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/todo", todo)
 app.use("/user", user)
-const port = "3042";
+const port = process.env.port || "1";
 
 
-const dbURI = "mongodb+srv://vikolearning1:fYLuf91X3iSMkqzj@todo.ex24ncd.mongodb.net/"
+const dbURI = process.env.dbConnection;
+
 mongoose.connect(dbURI)
 .then(() => app.listen(port, () =>{
     console.log("Server started on port", port)
@@ -27,8 +29,3 @@ mongoose.connect(dbURI)
 app.get("/", (req, res) =>{
     res.send("hello world")
 })
-
-
-//db password fYLuf91X3iSMkqzj
-
-//db user name vikolearning1

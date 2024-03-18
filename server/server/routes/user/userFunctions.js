@@ -8,7 +8,7 @@ async function userLogin(req, res) {
             res.status(400).send(JSON.stringify("email or password does not match!"))
             res.send()
         }else{
-            const jwtToken = jwt.sign({id: userFromDb._id, email:userFromDb.email}, "jwtFakeToken", { expiresIn: "24h" })
+            const jwtToken = jwt.sign({id: userFromDb._id, email:userFromDb.email}, process.env.jwtToken, { expiresIn: "24h" })
             res.status(200).send(JSON.stringify({message:"nice to see you again", token:jwtToken, user:userFromDb}))
             res.send()
         }
@@ -27,7 +27,7 @@ async function userRegister(req, res) {
         }
         else{
             const returnedData = await userManger.register(userToRegister);
-            const jwtToken = jwt.sign({id: returnedData._id, email:returnedData.email}, "jwtFakeToken", { expiresIn: "24h" })
+            const jwtToken = jwt.sign({id: returnedData._id, email:returnedData.email}, process.env.jwtToken, { expiresIn: "24h" })
             res.status(200).send(JSON.stringify({returnedData, token:jwtToken}));
             res.end();
         }
