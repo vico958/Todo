@@ -44,6 +44,10 @@ const  router = createBrowserRouter([
         path:"/profile",
         element: <ProfilePage/>
       },
+      {
+        path:"*",
+        element:<NotFoundPage/>
+      },
     ]
   },
     ]
@@ -58,12 +62,12 @@ const  router = createBrowserRouter([
   {
     path:"/login",
     element:<LoginPage/>,
-  }
+  },
+  {
+    path:"*",
+    element:<NotFoundPage/>
+  },
 ]},
-{
-  path:"*",
-  element:<NotFoundPage/>
-}
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
