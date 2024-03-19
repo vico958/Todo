@@ -40,7 +40,7 @@ export default function Navbar() {
       <Spacer />
 
       <HStack spacing="20px"> 
-        <Avatar name={user.fullName} src="/img/mario.png">
+        <Avatar name={user.fullName}>
         </Avatar>
         <Text>{user.email}</Text>
         <Button 
