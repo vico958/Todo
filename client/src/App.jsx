@@ -4,6 +4,7 @@ import todoClient from './services/todoClient';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import useTodoStore from './zustand/todo/store';
 import { Flex, Text } from '@chakra-ui/react';
+import Loader from './components/loader/Loader';
 
 const App = () => {
   const { todos, setTodosOnStartOfApp } = useTodoStore();
@@ -18,13 +19,18 @@ const App = () => {
     gettingData();
   },[])
 
-  if(todos?.length === 0){
+  if(todos === null){
+    return <Loader/>
+  }
+
+  if(todos.length === 0){
     return(
       <Flex justify="center" mt="50px">
         <Text color="purple.600">You dont have any Task</Text>
       </Flex>
     )
   }
+
   return (<>
     <TodoContainer/>
   </>

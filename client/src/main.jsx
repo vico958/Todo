@@ -29,7 +29,6 @@ const  router = createBrowserRouter([
     element:<AuthOutlet fallbackPath='/login'/>,
     children:[
       {
-        path:"/",
         element:<RootLayout/>,
     children: [
       {
