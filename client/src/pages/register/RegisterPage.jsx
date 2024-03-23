@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import userClient from "../../services/userClient";
 import {
   Flex,
@@ -19,17 +19,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./registerRules";
 import { passwordMustContain } from "../../services/schemasRules"
 import { handlePasswordKeyPress } from "../../services/general";
+import Loader from "../../components/loader/Loader";
+import LoaderAfterAction from "../../components/loader/LoaderAfterAction";
 
 const RegisterPage = () => {
   const signIn = useSignIn();
   const toast = useToast()
   const navigate = useNavigate();
-
+  const [showLoaderForRegister, setShowLoaderForRegister] = useState(false);
   const {register, handleSubmit, formState:{errors, isValid}} = useForm({resolver:zodResolver(schema)});
 
   const onClickSignUp = async (data) => {
     try{
-
+      setShowLoaderForRegister(true);
       const { email, password, fullName } = data
       const userToRegister = {
         "email": email,
@@ -64,9 +66,14 @@ const RegisterPage = () => {
           status: 'error',
         })
         //TODO: something
+      }finally{
+        setShowLoaderForRegister(false);
       }
   };
+
   return (
+    <>
+    {showLoaderForRegister? <LoaderAfterAction/> :
       <Flex justify="center" mt="50px">
         <Card borderTop="8px" borderColor="blue" w="400px" p="20px">
           <CardHeader><Heading>Register</Heading></CardHeader>
@@ -104,6 +111,8 @@ const RegisterPage = () => {
         <Text color="blue" fontSize="sm" m="5px">{passwordMustContain}</Text>
         </Card>
       </Flex>
+  }
+    </>
   );
 };
 

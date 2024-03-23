@@ -9,7 +9,7 @@ import Loader from './components/loader/Loader';
 const App = () => {
   const { todos, setTodosOnStartOfApp } = useTodoStore();
   const user = useAuthUser();
-
+  
   useEffect(() =>{
     const gettingData = async() => {
       const data = await todoClient.getAllTodoOfUser(user.token);

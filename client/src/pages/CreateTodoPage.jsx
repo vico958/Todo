@@ -8,6 +8,7 @@ import {
   Textarea,
   Button,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import todoClient from "../services/todoClient";
@@ -15,6 +16,7 @@ import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { useForm } from "react-hook-form";
 import { useRef, useState } from "react";
 import GenericModal from "../components/genericModal/GenericModal";
+import LoaderAfterAction from "../components/loader/LoaderAfterAction";
 
 const CreateTodoPage = () => {
   const user = useAuthUser();
@@ -22,10 +24,12 @@ const CreateTodoPage = () => {
   const { register, handleSubmit, reset } = useForm();
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [showLoaderForCreateTodo, setShowLoaderForCreateTodo] = useState(false);
   const onClickAnswerModal = useRef(null);
   const toast = useToast();
   const onSubmitForm = async (data) => {
     let message="";
+    setShowLoaderForCreateTodo(true);
     try {
       const token = user.token;
       const newTask = { ...data }
@@ -52,6 +56,7 @@ const CreateTodoPage = () => {
       message = `Something went worng with error code ${error.statusCode} would you like to retry to make this task?`
     }finally{
       setTimeout(function() {
+        setShowLoaderForCreateTodo(false);
         setShowModal(true);
         setModalMessage(
           message
@@ -63,8 +68,11 @@ const CreateTodoPage = () => {
   const navigateToHomePage = () => {
       navigate("/");
   };
+
   return (
     <>
+    {showLoaderForCreateTodo? <LoaderAfterAction/> :
+      <>
       {showModal && (
         <GenericModal
           modalMessage={modalMessage}
@@ -98,6 +106,8 @@ const CreateTodoPage = () => {
           <Button type="submit">Submit</Button>
         </form>
       </Box>
+      </>
+}
     </>
   );
 };
