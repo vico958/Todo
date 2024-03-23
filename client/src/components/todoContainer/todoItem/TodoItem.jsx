@@ -1,10 +1,11 @@
-import { Card, CardHeader, Box, Text, Heading, CardBody, CardFooter, Divider, Tooltip  } from "@chakra-ui/react";
+import { Card, CardHeader, Box, Text, Heading, CardBody, CardFooter, Divider, Tooltip, useToast  } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import todoClient from "../../../services/todoClient";
 import useTodoStore from "../../../zustand/todo/store";
 import GenericModal from "../../genericModal/GenericModal";
 import { useRef, useState } from "react";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import LoaderAfterAction from "../../loader/LoaderAfterAction";
 
 const TodoItem = ({todo}) => {
     const user = useAuthUser();
@@ -13,17 +14,35 @@ const TodoItem = ({todo}) => {
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState("")
     const onClickAnswerModal = useRef(null)
+    const toast = useToast();
+    const [showLoaderAfterDeleteOrEditTodo, setShowLoaderAfterDeleteOrEditTodo] = useState(false);
 
     const handleDeleteTaskAfterAcceptDelete = async () =>{
         const token = user.token;
-        await todoClient.deleteTask(_id, token)
-        removeTodo(_id)
+        try{
+            setShowLoaderAfterDeleteOrEditTodo(true);
+            await todoClient.deleteTask(_id, token)
+            removeTodo(_id)
+            toastFunctionForComponent('Removed todo.', "Successfully removed todo", "success");
+        }catch(error){
+            toastFunctionForComponent('Removed todo.', "Failed removed todo", "error");
+        }finally{
+            setShowLoaderAfterDeleteOrEditTodo(false);
+        }
     }
 
     const handleEditTodoPriorityAfterAcceptEdit = async () => {
         const token = user.token;
-        await todoClient.editTodoPriority(_id, token);
-        editTodoPriority(_id)
+        try{
+            setShowLoaderAfterDeleteOrEditTodo(true);
+            await todoClient.editTodoPriority(_id, token);
+            editTodoPriority(_id)
+            toastFunctionForComponent('Edited todo.', "Successfully Edited todo", "success");
+        }catch(error){
+            toastFunctionForComponent('Edited todo.', "Failed Edited todo", "error");
+        }finally{
+            setShowLoaderAfterDeleteOrEditTodo(false);
+        }
     }
 
     const handleDeleteTask = () => {
@@ -37,7 +56,21 @@ const TodoItem = ({todo}) => {
         setModalMessage(`are you sure you want to edit this priority ${title} task?`)
         onClickAnswerModal.current = handleEditTodoPriorityAfterAcceptEdit;
     }
+
+    const toastFunctionForComponent = (title, description, status) => {
+        toast({
+            title: title,
+            description: description,
+            duration: 1500,
+            isClosable: true,
+            position: 'top',
+            status: status,
+          })
+    }
+
     return(
+        <>
+        {showLoaderAfterDeleteOrEditTodo? <LoaderAfterAction/> :
         <>
         {showModal && <GenericModal onClickYesButton={onClickAnswerModal.current} modalMessage={modalMessage} setModalNotToShow={setShowModal}/>}
         <Tooltip mb="10px" placement='top-end' hasArrow arrowSize={15} 
@@ -62,8 +95,10 @@ const TodoItem = ({todo}) => {
             </CardFooter>
         </Card>
         </Tooltip>
+        </>
+        }
             </>
-    )
+            )
 }
 
 export default TodoItem;

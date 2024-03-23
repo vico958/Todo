@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import userClient from "../services/userClient";
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { useForm } from 'react-hook-form';
-import Loader from '../components/loader/Loader';
 import LoaderAfterAction from '../components/loader/LoaderAfterAction';
 
 const LoginPage = () => {
@@ -37,9 +36,7 @@ const LoginPage = () => {
         position: "top",
         status: "success",
       });
-      setTimeout(function() {
         navigate("/")
-        }, 1600);
     }catch(error){
       setShowLoaderAfterClickLogin(false);
       toast({
@@ -49,9 +46,7 @@ const LoginPage = () => {
         position: "top",
         status: "error",
       });
-      setTimeout(function() {
-        navigate("/login")
-        }, 1600);
+      navigate("/login")
     }
     finally{
       setShowLoaderAfterClickLogin(false);
