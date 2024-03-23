@@ -79,9 +79,15 @@ async function changeFullName(req, res) {
         
     }
 }
+
+async function helloWorld(req, res){
+    res.status(200).json("hello world");
+    res.send();
+}
 module.exports = {
     userLogin,
     userRegister,
     changePassword,
-    changeFullName
+    changeFullName,
+    helloWorld
 }
