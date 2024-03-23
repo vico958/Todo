@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import TodoContainer from './components/todoContainer/todoContainer/TodoContainer';
 import todoClient from './services/todoClient';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import useTodoStore from './zustand/todo/store';
 import { Flex, Text } from '@chakra-ui/react';
 import Loader from './components/loader/Loader';
-
 const App = () => {
   const { todos, setTodosOnStartOfApp } = useTodoStore();
   const user = useAuthUser();
@@ -15,8 +14,7 @@ const App = () => {
       const data = await todoClient.getAllTodoOfUser(user.token);
       setTodosOnStartOfApp(data)
     }
-
-    gettingData();
+      gettingData();
   },[])
 
   if(todos === null){
@@ -31,9 +29,8 @@ const App = () => {
     )
   }
 
-  return (<>
+  return (
     <TodoContainer/>
-  </>
   )
 }
 
